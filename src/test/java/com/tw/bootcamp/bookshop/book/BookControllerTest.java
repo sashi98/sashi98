@@ -28,6 +28,28 @@ class BookControllerTest {
     UserService userService;
 
     @Test
+    public void testWhenUrlIsNotFound() throws Exception {
+        mockMvc.perform(get("/bookfs")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testHealthIsGood() throws Exception {
+        mockMvc.perform(get("/books")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testWhenGetABook() throws Exception {
+        mockMvc.perform(get("/books/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
     void shouldListAllBooksWhenPresent() throws Exception {
         List<Book> books = new ArrayList<>();
         Book book = new Book("title", "author name", 300);
